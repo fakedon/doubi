@@ -40,9 +40,14 @@ Install_Libsodium(){
 		yum -y groupinstall "Development Tools"
 		echo -e "${Info} 下载..."
 		wget  --no-check-certificate -N "https://github.com/jedisct1/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
-		echo -e "${Info} 解压..."
-		tar -xzf libsodium-${Libsodiumr_ver}.tar.gz
-		cd libsodium-${Libsodiumr_ver}
+		if [[ $? == 0 ]]; then
+			echo -e "${Info} 解压..."
+			tar -xzf libsodium-${Libsodiumr_ver}.tar.gz && cd libsodium-${Libsodiumr_ver}
+		else
+			wget  --no-check-certificate -N "https://download.libsodium.org/libsodium/releases/LATEST.tar.gz"
+			echo -e "${Info} 解压..."
+			tar -xzf LATEST.tar.gz && cd libsodium-stable
+		fi
 		echo -e "${Info} 编译安装..."
 		./configure --disable-maintainer-mode
 		make -j2
@@ -54,9 +59,14 @@ Install_Libsodium(){
 		apt-get install -y build-essential
 		echo -e "${Info} 下载..."
 		wget  --no-check-certificate -N "https://github.com/jedisct1/libsodium/releases/download/${Libsodiumr_ver}/libsodium-${Libsodiumr_ver}.tar.gz"
-		echo -e "${Info} 解压..."
-		tar -xzf libsodium-${Libsodiumr_ver}.tar.gz
-		cd libsodium-${Libsodiumr_ver}
+		if [[ $? == 0 ]]; then
+			echo -e "${Info} 解压..."
+			tar -xzf libsodium-${Libsodiumr_ver}.tar.gz && cd libsodium-${Libsodiumr_ver}
+		else
+			wget  --no-check-certificate -N "https://download.libsodium.org/libsodium/releases/LATEST.tar.gz"
+			echo -e "${Info} 解压..."
+			tar -xzf LATEST.tar.gz && cd libsodium-stable
+		fi
 		echo -e "${Info} 编译安装..."
 		./configure --disable-maintainer-mode
 		make -j2
@@ -66,6 +76,8 @@ Install_Libsodium(){
 	cd ..
 	rm -rf libsodium-${Libsodiumr_ver}.tar.gz
 	rm -rf libsodium-${Libsodiumr_ver}
+	rm -rf LATEST.tar.gz
+	rm -rf libsodium-stable
 	[[ ! -e ${Libsodiumr_file} ]] && echo -e "${Error} libsodium 安装失败 !" && exit 1
 	echo && echo -e "${Info} libsodium 安装成功 !" && echo
 }
