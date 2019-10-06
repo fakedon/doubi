@@ -114,7 +114,7 @@ Download_aria2(){
 	fi
 	wget -N --no-check-certificate "https://github.com/q3aql/aria2-static-builds/releases/download/v${aria2_new_ver}/aria2-${aria2_new_ver}-linux-gnu-${bit}-build1.tar.bz2"
 	Aria2_Name="aria2-${aria2_new_ver}-linux-gnu-${bit}-build1"
-	
+
 	[[ ! -s "${Aria2_Name}.tar.bz2" ]] && echo -e "${Error} Aria2 压缩包下载失败 !" && exit 1
 	tar jxvf "${Aria2_Name}.tar.bz2"
 	[[ ! -e "/usr/local/${Aria2_Name}" ]] && echo -e "${Error} Aria2 解压失败 !" && rm -rf "${Aria2_Name}.tar.bz2" && exit 1
@@ -130,23 +130,23 @@ Download_aria2(){
 }
 Download_aria2_conf(){
 	mkdir "${file}" && cd "${file}"
-	wget --no-check-certificate -N "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/other/Aria2/aria2.conf"
+	wget --no-check-certificate -N "https://raw.githubusercontent.com/fakedon/doubi/master/other/Aria2/aria2.conf"
 	[[ ! -s "aria2.conf" ]] && echo -e "${Error} Aria2 配置文件下载失败 !" && rm -rf "${file}" && exit 1
-	wget --no-check-certificate -N "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/other/Aria2/dht.dat"
+	wget --no-check-certificate -N "https://raw.githubusercontent.com/fakedon/doubi/master/other/Aria2/dht.dat"
 	[[ ! -s "dht.dat" ]] && echo -e "${Error} Aria2 DHT文件下载失败 !" && rm -rf "${file}" && exit 1
 	echo '' > aria2.session
 	sed -i 's/^rpc-secret=DOUBIToyo/rpc-secret='$(date +%s%N | md5sum | head -c 20)'/g' ${aria2_conf}
 }
 Service_aria2(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/aria2_centos -O /etc/init.d/aria2; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/aria2_centos -O /etc/init.d/aria2; then
 			echo -e "${Error} Aria2服务 管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/aria2
 		chkconfig --add aria2
 		chkconfig aria2 on
 	else
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/aria2_debian -O /etc/init.d/aria2; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/aria2_debian -O /etc/init.d/aria2; then
 			echo -e "${Error} Aria2服务 管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/aria2
@@ -252,7 +252,7 @@ Set_aria2_RPC_passwd(){
 				if [[ ${read_123} != "1" ]]; then
 					Restart_aria2
 				fi
-			else 
+			else
 				echo -e "${Error} 密码修改失败！旧密码为：${Green_font_prefix}${aria2_passwd}${Font_color_suffix}"
 			fi
 		else
@@ -262,7 +262,7 @@ Set_aria2_RPC_passwd(){
 				if [[ ${read_123} != "1" ]]; then
 					Restart_aria2
 				fi
-			else 
+			else
 				echo -e "${Error} 密码修改失败！旧密码为：${Green_font_prefix}${aria2_passwd}${Font_color_suffix}"
 			fi
 		fi
@@ -295,7 +295,7 @@ Set_aria2_RPC_port(){
 				if [[ ${read_123} != "1" ]]; then
 					Restart_aria2
 				fi
-			else 
+			else
 				echo -e "${Error} 端口修改失败！旧端口为：${Green_font_prefix}${aria2_port}${Font_color_suffix}"
 			fi
 		else
@@ -308,7 +308,7 @@ Set_aria2_RPC_port(){
 				if [[ ${read_123} != "1" ]]; then
 					Restart_aria2
 				fi
-			else 
+			else
 				echo -e "${Error} 端口修改失败！旧密码为：${Green_font_prefix}${aria2_port}${Font_color_suffix}"
 			fi
 		fi
@@ -339,7 +339,7 @@ Set_aria2_RPC_dir(){
 					if [[ ${read_123} != "1" ]]; then
 						Restart_aria2
 					fi
-				else 
+				else
 					echo -e "${Error} 位置修改失败！旧位置为：${Green_font_prefix}${aria2_dir}${Font_color_suffix}"
 				fi
 			else
@@ -351,7 +351,7 @@ Set_aria2_RPC_dir(){
 					if [[ ${read_123} != "1" ]]; then
 						Restart_aria2
 					fi
-				else 
+				else
 					echo -e "${Error} 位置修改失败！旧位置为：${Green_font_prefix}${aria2_dir}${Font_color_suffix}"
 				fi
 			fi
@@ -402,7 +402,7 @@ Read_config(){
 		aria2_port=$(echo -e "${conf_text}"|grep "rpc-listen-port="|awk -F "=" '{print $NF}')
 		aria2_passwd=$(echo -e "${conf_text}"|grep "rpc-secret="|awk -F "=" '{print $NF}')
 	fi
-	
+
 }
 View_Aria2(){
 	check_installed_status
@@ -562,13 +562,13 @@ Set_iptables(){
 	fi
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/aria2.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/aria2.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/aria2" ]]; then
 		rm -rf /etc/init.d/aria2
 		Service_aria2
 	fi
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/aria2.sh" && chmod +x aria2.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/aria2.sh" && chmod +x aria2.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 action=$1
@@ -577,7 +577,7 @@ if [[ "${action}" == "update-bt-tracker" ]]; then
 else
 echo && echo -e " Aria2 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- Toyo | doub.io/shell-jc4 --
-  
+
  ${Green_font_prefix} 0.${Font_color_suffix} 升级脚本
 ————————————
  ${Green_font_prefix} 1.${Font_color_suffix} 安装 Aria2

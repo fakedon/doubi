@@ -112,14 +112,14 @@ Download_brook(){
 }
 Service_brook(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/brook_centos" -O /etc/init.d/brook; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/service/brook_centos" -O /etc/init.d/brook; then
 			echo -e "${Error} Brook服务 管理脚本下载失败 !" && rm -rf "${file}" && exit 1
 		fi
 		chmod +x "/etc/init.d/brook"
 		chkconfig --add brook
 		chkconfig brook on
 	else
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/brook_debian" -O /etc/init.d/brook; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/service/brook_debian" -O /etc/init.d/brook; then
 			echo -e "${Error} Brook服务 管理脚本下载失败 !" && rm -rf "${file}" && exit 1
 		fi
 		chmod +x "/etc/init.d/brook"
@@ -240,7 +240,7 @@ Set_brook(){
  ${Green_font_prefix}4.${Font_color_suffix}  修改 混淆协议
 ————————————————
  ${Green_font_prefix}5.${Font_color_suffix}  监控 运行状态
- 
+
  ${Tip} 用户的端口是不能重复的，密码可以重复 !" && echo
 	read -e -p "(默认: 取消):" bk_modify
 	[[ -z "${bk_modify}" ]] && echo "已取消..." && exit 1
@@ -486,7 +486,7 @@ debian_View_user_connection_info(){
 	Read_config
 	IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'brook' |grep 'tcp6' |awk '{print $5}' |awk -F ":" '{print $1}' |sort -u |grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" |wc -l`
 	echo -e "用户总数: ${Green_background_prefix} "${user_all_num}" ${Font_color_suffix} 链接IP总数: ${Green_background_prefix} "${IP_total}" ${Font_color_suffix} "
-	
+
 	for((integer = 1; integer <= ${user_all_num}; integer++))
 	do
 		user_port=$(echo "${user_all}"|sed -n "${integer}p"|awk '{print $1}')
@@ -513,7 +513,7 @@ centos_View_user_connection_info(){
 	Read_config
 	IP_total=`netstat -anp |grep 'ESTABLISHED' |grep 'brook' |grep 'tcp' | grep '::ffff:' |awk '{print $5}' |awk -F ":" '{print $4}' |sort -u |grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" |wc -l`
 	echo -e "用户总数: ${Green_background_prefix} "${user_all_num}" ${Font_color_suffix} 链接IP总数: ${Green_background_prefix} "${IP_total}" ${Font_color_suffix} "
-	
+
 	for((integer = 1; integer <= ${user_all_num}; integer++))
 	do
 		user_port=$(echo "${user_all}"|sed -n "${integer}p"|awk '{print $1}')
@@ -675,13 +675,13 @@ Set_iptables(){
 	fi
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/brook.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/brook.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/brook" ]]; then
 		rm -rf /etc/init.d/brook
 		Service_brook
 	fi
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/brook.sh" && chmod +x brook.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/brook.sh" && chmod +x brook.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 check_sys
@@ -691,7 +691,7 @@ if [[ "${action}" == "monitor" ]]; then
 else
 	echo && echo -e "  Brook 一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ---- Toyo | doub.io/brook-jc3 ----
-  
+
  ${Green_font_prefix} 0.${Font_color_suffix} 升级脚本
 ————————————
  ${Green_font_prefix} 1.${Font_color_suffix} 安装 Brook

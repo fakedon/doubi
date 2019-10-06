@@ -118,14 +118,14 @@ Download_goflyway(){
 }
 Service_goflyway(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/goflyway_centos -O /etc/init.d/goflyway; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/goflyway_centos -O /etc/init.d/goflyway; then
 			echo -e "${Error} GoFlyway 服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/goflyway
 		chkconfig --add goflyway
 		chkconfig goflyway on
 	else
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/goflyway_debian -O /etc/init.d/goflyway; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/goflyway_debian -O /etc/init.d/goflyway; then
 			echo -e "${Error} GoFlyway 服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/goflyway
@@ -199,7 +199,7 @@ Set_proxy_pass(){
 }
 Set_protocol(){
 	echo -e "请选择 GoFlyway 传输协议
-	
+
  ${Green_font_prefix}1.${Font_color_suffix} HTTP (默认，要使用 CDN、WebSocket 则必须选择 HTTP 协议)
  ${Green_font_prefix}2.${Font_color_suffix} KCP  (将 TCP 数据转为 KCP，并通过UDP方式传输，可复活被TCP阻断的IP)
  ${Tip} 如果使用 KCP 协议，那么将不能使用 CDN、WebSocket。另外，部分地区对海外的UDP链接会QOS限速，这可能导致 KCP 协议速度不理想。" && echo
@@ -280,7 +280,7 @@ Set_goflyway(){
  ${Green_font_prefix}5.${Font_color_suffix}  修改 全部配置
 ————————————————
  ${Green_font_prefix}6.${Font_color_suffix}  监控 运行状态
- 
+
  ${Tip} 用户的端口是不能重复的，密码可以重复 !" && echo
 	read -e -p "(默认: 取消):" gf_modify
 	[[ -z "${gf_modify}" ]] && echo "已取消..." && exit 1
@@ -603,13 +603,13 @@ Set_iptables(){
 	fi
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/goflyway.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/goflyway" ]]; then
 		rm -rf /etc/init.d/goflyway
 		Service_goflyway
 	fi
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/goflyway.sh" && chmod +x goflyway.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/goflyway.sh" && chmod +x goflyway.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 check_sys
@@ -619,7 +619,7 @@ if [[ "${action}" == "monitor" ]]; then
 else
 echo && echo -e "  GoFlyway 一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- Toyo | doub.io/goflyway-jc2 --
-  
+
  ${Green_font_prefix} 0.${Font_color_suffix} 升级脚本
 ————————————
  ${Green_font_prefix} 1.${Font_color_suffix} 安装 GoFlyway

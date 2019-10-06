@@ -79,23 +79,23 @@ set_config_password(){
 set_config_method(){
 	echo -e "请选择要设置的ShadowsocksR账号 加密方式
  ${Green_font_prefix} 1.${Font_color_suffix} none
- 
+
  ${Green_font_prefix} 2.${Font_color_suffix} rc4
  ${Green_font_prefix} 3.${Font_color_suffix} rc4-md5
  ${Green_font_prefix} 4.${Font_color_suffix} rc4-md5-6
- 
+
  ${Green_font_prefix} 5.${Font_color_suffix} aes-128-ctr
  ${Green_font_prefix} 6.${Font_color_suffix} aes-192-ctr
  ${Green_font_prefix} 7.${Font_color_suffix} aes-256-ctr
- 
+
  ${Green_font_prefix} 8.${Font_color_suffix} aes-128-cfb
  ${Green_font_prefix} 9.${Font_color_suffix} aes-192-cfb
  ${Green_font_prefix}10.${Font_color_suffix} aes-256-cfb
- 
+
  ${Green_font_prefix}11.${Font_color_suffix} aes-128-cfb8
  ${Green_font_prefix}12.${Font_color_suffix} aes-192-cfb8
  ${Green_font_prefix}13.${Font_color_suffix} aes-256-cfb8
- 
+
  ${Green_font_prefix}14.${Font_color_suffix} salsa20
  ${Green_font_prefix}15.${Font_color_suffix} chacha20
  ${Green_font_prefix}16.${Font_color_suffix} chacha20-ietf
@@ -233,7 +233,7 @@ Set_server(){
 默认为本机IP为域名，例如输入: toyoo.ml，如果要使用本机IP，请留空直接回车"
 	read -e -p "(默认: 本机IP):" server_s
 	[[ -z "$server_s" ]] && server_s=""
-	
+
 	echo && echo -e "	IP/域名[server]: ${Red_background_prefix} ${server_s} ${Font_color_suffix}" && echo
 }
 Set_server_port(){
@@ -541,7 +541,7 @@ View_log(){
 Set_SSRStatus(){
 	check_installed_server_status
 	echo && echo -e " 你要做什么？
-	
+
  ${Green_font_prefix} 1.${Font_color_suffix} 添加 账号配置
  ${Green_font_prefix} 2.${Font_color_suffix} 删除 账号配置
  ${Green_font_prefix} 3.${Font_color_suffix} 修改 账号配置
@@ -715,7 +715,7 @@ Install_caddy(){
 		Set_server
 		Set_server_port
 		if [[ ! -e "/usr/local/caddy/caddy" ]]; then
-			wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/caddy_install.sh
+			wget -N --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/caddy_install.sh
 			chmod +x caddy_install.sh
 			bash caddy_install.sh install
 			[[ ! -e "/usr/local/caddy/caddy" ]] && echo -e "${Error} Caddy安装失败，请手动部署，Web网页文件位置：${Web_file}" && exit 0
@@ -809,15 +809,15 @@ Del_Crontab(){
 	fi
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrstatus.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/ssrstatus.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ssrstatus.sh" && chmod +x ssrstatus.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/ssrstatus.sh" && chmod +x ssrstatus.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 menu(){
 echo && echo -e "  SSRStatus 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- Toyo | doub.io/shell-jc5 --
-  
+
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 依赖及Web网页

@@ -117,14 +117,14 @@ Download(){
 }
 Service(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/daze_centos -O /etc/init.d/daze; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/daze_centos -O /etc/init.d/daze; then
 			echo -e "${Error} DAZE 服务管理脚本下载失败 !" && rm -rf "${Folder}" && exit 1
 		fi
 		chmod +x /etc/init.d/daze
 		chkconfig --add daze
 		chkconfig daze on
 	else
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/daze_debian -O /etc/init.d/daze; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/daze_debian -O /etc/init.d/daze; then
 			echo -e "${Error} DAZE 服务管理脚本下载失败 !" && rm -rf "${Folder}" && exit 1
 		fi
 		chmod +x /etc/init.d/daze
@@ -184,7 +184,7 @@ Set_password(){
 }
 Set_method(){
 	echo -e "请选择 DAZE 加密方式(或者说混淆)
-	
+
  ${Green_font_prefix}1.${Font_color_suffix} ashe (仅加密无混淆)
  ${Green_font_prefix}2.${Font_color_suffix} asheshadow (加密+HTTP混淆，注意后面务必填写混淆伪装的网站)
  ${Tip} 如果使用 asheshadow，那么建议搭配 80 8080 等端口，如果你有域名，请域名A记录指向当前服务器IP，DAZE 客户端处服务器地址填写你的域名，即可混淆伪装为 http://域名:端口/" && echo
@@ -309,7 +309,7 @@ Set(){
  ${Green_font_prefix}6.${Font_color_suffix}  修改 全部配置
 ————————————————
  ${Green_font_prefix}7.${Font_color_suffix}  监控 运行状态
- 
+
  ${Tip} 用户的端口是不能重复的，密码可以重复 !" && echo
 	read -e -p "(默认: 取消):" gf_modify
 	[[ -z "${gf_modify}" ]] && echo "已取消..." && exit 1
@@ -636,13 +636,13 @@ Set_iptables(){
 	fi
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/daze.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/daze.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/daze" ]]; then
 		rm -rf /etc/init.d/daze
 		Service
 	fi
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/daze.sh" && chmod +x daze.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/daze.sh" && chmod +x daze.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 check_sys
@@ -652,7 +652,7 @@ if [[ "${action}" == "monitor" ]]; then
 else
 echo && echo -e "  DAZE 一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- Toyo | doub.io/daze-jc3 --
-  
+
  ${Green_font_prefix} 0.${Font_color_suffix} 升级脚本
 ————————————
  ${Green_font_prefix} 1.${Font_color_suffix} 安装 DAZE

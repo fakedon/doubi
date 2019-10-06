@@ -63,14 +63,14 @@ Download_dowsdns(){
 }
 Service_dowsdns(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/dowsdns_centos" -O /etc/init.d/dowsdns; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/service/dowsdns_centos" -O /etc/init.d/dowsdns; then
 			echo -e "${Error} dowsDNS 服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/dowsdns
 		chkconfig --add dowsdns
 		chkconfig dowsdns on
 	else
-		if ! wget --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/dowsdns_debian" -O /etc/init.d/dowsdns; then
+		if ! wget --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/service/dowsdns_debian" -O /etc/init.d/dowsdns; then
 			echo -e "${Error} dowsDNS 服务管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/dowsdns
@@ -156,7 +156,7 @@ Set_remote_dns_port(){
 Set_remote_dns(){
 	echo -e "请选择并输入 dowsDNS 的远程(上游)DNS解析服务器
  说明：即一些dowsDNS没有指定的域名都由上游DNS解析，比如百度啥的。
- 
+
  ${Green_font_prefix}1.${Font_color_suffix} 114.114.114.114 53
  ${Green_font_prefix}2.${Font_color_suffix} 8.8.8.8 53
  ${Green_font_prefix}3.${Font_color_suffix} 208.67.222.222 53
@@ -304,7 +304,7 @@ Set_dowsdns_wrcd(){
 	check_installed_status
 	echo && echo -e "你要做什么？
  ${Green_font_prefix}0.${Font_color_suffix} 查看 泛域名解析列表
- 
+
  ${Green_font_prefix}1.${Font_color_suffix} 添加 泛域名解析
  ${Green_font_prefix}2.${Font_color_suffix} 删除 泛域名解析
  ${Green_font_prefix}3.${Font_color_suffix} 修改 泛域名解析" && echo
@@ -512,7 +512,7 @@ View_dowsdns(){
 	clear && echo "————————————————" && echo
 	echo -e " 请在你的设备中设置DNS服务器为：
  IP : ${Green_font_prefix}${ip}${Font_color_suffix} ,端口 : ${Green_font_prefix}${local_dns_port}${Font_color_suffix}
- 
+
  注意：如果设备中没有 DNS端口设置选项，那么就只能使用默认的 53 端口"
 	echo && echo "————————————————"
 }
@@ -547,18 +547,18 @@ View_Log(){
 	tail -f ${dowsdns_log}
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/dowsdns.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/dowsdns.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/dowsdns" ]]; then
 		rm -rf /etc/init.d/dowsdns
 		Service_dowsdns
 	fi
-		wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/dowsdns.sh" && chmod +x dowsdns.sh
+		wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/dowsdns.sh" && chmod +x dowsdns.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 echo && echo -e "  dowsDNS 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- Toyo | doub.io/dowsdns-jc3 --
-  
+
  ${Green_font_prefix} 0.${Font_color_suffix} 升级脚本
  ————————————
  ${Green_font_prefix} 1.${Font_color_suffix} 安装 dowsDNS

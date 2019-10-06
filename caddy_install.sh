@@ -43,13 +43,13 @@ Download_caddy(){
 	PID=$(ps -ef |grep "caddy" |grep -v "grep" |grep -v "init.d" |grep -v "service" |grep -v "caddy_install" |awk '{print $2}')
 	[[ ! -z ${PID} ]] && kill -9 ${PID}
 	[[ -e "caddy_linux*.tar.gz" ]] && rm -rf "caddy_linux*.tar.gz"
-	
+
 	if [[ ! -z ${extension} ]]; then
 		extension_all="?plugins=${extension}&license=personal"
 	else
 		extension_all="?license=personal"
 	fi
-	
+
 	if [[ ${bit} == "x86_64" ]]; then
 		wget --no-check-certificate -O "caddy_linux.tar.gz" "https://caddyserver.com/download/linux/amd64${extension_all}"
 	elif [[ ${bit} == "i386" || ${bit} == "i686" ]]; then
@@ -64,21 +64,21 @@ Download_caddy(){
 	rm -rf "caddy_linux.tar.gz"
 	[[ ! -e ${caddy_file} ]] && echo -e "${Error_font_prefix}[错误]${Font_suffix} Caddy 解压失败或压缩文件错误 !" && exit 1
 	rm -rf LICENSES.txt
-	rm -rf README.txt 
+	rm -rf README.txt
 	rm -rf CHANGES.txt
 	rm -rf "init/"
 	chmod +x caddy
 }
 Service_caddy(){
 	if [[ ${release} = "centos" ]]; then
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/caddy_centos -O /etc/init.d/caddy; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/caddy_centos -O /etc/init.d/caddy; then
 			echo -e "${Error_font_prefix}[错误]${Font_suffix} Caddy服务 管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/caddy
 		chkconfig --add caddy
 		chkconfig caddy on
 	else
-		if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/caddy_debian -O /etc/init.d/caddy; then
+		if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/caddy_debian -O /etc/init.d/caddy; then
 			echo -e "${Error_font_prefix}[错误]${Font_suffix} Caddy服务 管理脚本下载失败 !" && exit 1
 		fi
 		chmod +x /etc/init.d/caddy

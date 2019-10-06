@@ -78,17 +78,17 @@ Download_ocserv(){
 	make install
 	cd .. && cd ..
 	rm -rf ocserv/
-	
+
 	if [[ -e ${file} ]]; then
 		mkdir "${conf_file}"
-		wget --no-check-certificate -N -P "${conf_file}" "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/other/ocserv.conf"
+		wget --no-check-certificate -N -P "${conf_file}" "https://raw.githubusercontent.com/fakedon/doubi/master/other/ocserv.conf"
 		[[ ! -s "${conf}" ]] && echo -e "${Error} ocserv 配置文件下载失败 !" && rm -rf "${conf_file}" && exit 1
 	else
 		echo -e "${Error} ocserv 编译安装失败，请检查！" && exit 1
 	fi
 }
 Service_ocserv(){
-	if ! wget --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/service/ocserv_debian -O /etc/init.d/ocserv; then
+	if ! wget --no-check-certificate https://raw.githubusercontent.com/fakedon/doubi/master/service/ocserv_debian -O /etc/init.d/ocserv; then
 		echo -e "${Error} ocserv 服务 管理脚本下载失败 !" && over
 	fi
 	chmod +x /etc/init.d/ocserv
@@ -117,7 +117,7 @@ crl_signing_key' > ca.tmpl
 	[[ $? != 0 ]] && echo -e "${Error} 生成SSL证书密匙文件失败(ca-key.pem) !" && over
 	certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --outfile ca-cert.pem
 	[[ $? != 0 ]] && echo -e "${Error} 生成SSL证书文件失败(ca-cert.pem) !" && over
-	
+
 	Get_ip
 	if [[ -z "$ip" ]]; then
 		echo -e "${Error} 检测外网IP失败 !"
@@ -135,7 +135,7 @@ tls_www_server' > server.tmpl
 	[[ $? != 0 ]] && echo -e "${Error} 生成SSL证书密匙文件失败(server-key.pem) !" && over
 	certtool --generate-certificate --load-privkey server-key.pem --load-ca-certificate ca-cert.pem --load-ca-privkey ca-key.pem --template server.tmpl --outfile server-cert.pem
 	[[ $? != 0 ]] && echo -e "${Error} 生成SSL证书文件失败(server-cert.pem) !" && over
-	
+
 	mkdir /etc/ocserv/ssl
 	mv ca-cert.pem /etc/ocserv/ssl/ca-cert.pem
 	mv ca-key.pem /etc/ocserv/ssl/ca-key.pem
@@ -154,7 +154,7 @@ Installation_dependency(){
 			apt-get install vim net-tools pkg-config build-essential libgnutls28-dev libwrap0-dev liblz4-dev libseccomp-dev libreadline-dev libnl-nf-3-dev libev-dev gnutls-bin -y
 		else
 			mv /etc/apt/sources.list /etc/apt/sources.list.bak
-			wget --no-check-certificate -O "/etc/apt/sources.list" "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/sources/us.sources.list"
+			wget --no-check-certificate -O "/etc/apt/sources.list" "https://raw.githubusercontent.com/fakedon/doubi/master/sources/us.sources.list"
 			apt-get update
 			apt-get install vim net-tools pkg-config build-essential libgnutls28-dev libwrap0-dev liblz4-dev libseccomp-dev libreadline-dev libnl-nf-3-dev libev-dev gnutls-bin -y
 			rm -rf /etc/apt/sources.list
@@ -376,14 +376,14 @@ Modify_User_disabled(){
 Set_Pass(){
 	check_installed_status
 	echo && echo -e " 你要做什么？
-	
+
  ${Green_font_prefix} 0.${Font_color_suffix} 列出 账号配置
 ————————
  ${Green_font_prefix} 1.${Font_color_suffix} 添加 账号配置
  ${Green_font_prefix} 2.${Font_color_suffix} 删除 账号配置
 ————————
  ${Green_font_prefix} 3.${Font_color_suffix} 启用/禁用 账号配置
- 
+
  注意：添加/修改/删除 账号配置后，VPN服务端会实时读取，无需重启服务端 !" && echo
 	read -e -p "(默认: 取消):" set_num
 	[[ -z "${set_num}" ]] && echo "已取消..." && exit 1
@@ -499,26 +499,26 @@ Set_iptables(){
 		fi
 	fi
 	iptables -t nat -A POSTROUTING -o ${Network_card} -j MASQUERADE
-	
+
 	iptables-save > /etc/iptables.up.rules
 	echo -e '#!/bin/bash\n/sbin/iptables-restore < /etc/iptables.up.rules' > /etc/network/if-pre-up.d/iptables
 	chmod +x /etc/network/if-pre-up.d/iptables
 }
 Update_Shell(){
-	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ocserv.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
+	sh_new_ver=$(wget --no-check-certificate -qO- -t1 -T3 "https://raw.githubusercontent.com/fakedon/doubi/master/ocserv.sh"|grep 'sh_ver="'|awk -F "=" '{print $NF}'|sed 's/\"//g'|head -1) && sh_new_type="github"
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
 	if [[ -e "/etc/init.d/ocserv" ]]; then
 		rm -rf /etc/init.d/ocserv
 		Service_ocserv
 	fi
-	wget -N --no-check-certificate "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/ocserv.sh" && chmod +x ocserv.sh
+	wget -N --no-check-certificate "https://raw.githubusercontent.com/fakedon/doubi/master/ocserv.sh" && chmod +x ocserv.sh
 	echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 check_sys
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 echo && echo -e " ocserv 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   -- Toyo | doub.io/vpnzy-7 --
-  
+
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
 ————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 ocserv

@@ -70,7 +70,7 @@ Language(){
 		Word_and="并"
 		Word_but="但"
 		Word_serverspeeder="锐速"
-	
+
 		Info_switch_single_port_mode="你确定要切换模式为 ${Word_single_port} ?[y/N]"
 		Info_switch_multi_port_mode="你确定要切换模式为 ${Word_multi_port} ?[y/N]"
 		Info_input_port="请输入ShadowsocksR ${Word_port} [1-65535]"
@@ -87,7 +87,7 @@ Language(){
 		Prompt_input_single_threaded_speed_limit="${Green_font_prefix} ${Word_Prompt}: ${Font_color_suffix}这个指的是，每个端口 单线程的限速上限，多线程即无效。"
 		Info_total_port_speed_limit="请输入 你要设置的每个端口 总速度 限速上限(单位：KB/S)"
 		Prompt_total_port_speed_limit="${Green_font_prefix} ${Word_Prompt}: ${Font_color_suffix}这个指的是，每个端口 总速度 限速上限，单个端口整体限速。"
-	
+
 		Info_input_modify_the_type="请输入数字 来选择你要修改的类型 :
 1. 修改 ${Word_port}/${Word_pass}
 2. 修改 ${Word_method}/${Word_protocol}/${Word_obfs}"
@@ -170,7 +170,7 @@ Language(){
 		Prompt_switch_language_english=" 当前脚本语言为:  中文"
 
 #菜单
-		Menu_prompt_1="请输入一个数字来选择对应的选项" 
+		Menu_prompt_1="请输入一个数字来选择对应的选项"
 		Menu_prompt_2="(请输入数字 0-27): "
 		Menu_prompt_3="请选择并输入数字 0-27"
 		Menu_options="${Green_font_prefix}  1. ${Font_color_suffix}安装 ShadowsocksR
@@ -250,7 +250,7 @@ ${Green_font_prefix}  0. ${Font_color_suffix}The scripting language is English
 		Word_and="and"
 		Word_but="but"
 		Word_serverspeeder="ServerSpeeder"
-	
+
 		Info_switch_single_port_mode="Are you sure you want to switch mode to ${Word_single_port} ?[y/N]"
 		Info_switch_multi_port_mode="Are you sure you want to switch mode to Word_multi_port ?[y/N]"
 		Info_input_port="Please enter ShadowsocksR ${Word_port} [1-65535]"
@@ -267,7 +267,7 @@ ${Green_font_prefix}  0. ${Font_color_suffix}The scripting language is English
 		Prompt_input_single_threaded_speed_limit="${Green_font_prefix} ${Word_Prompt}: ${Font_color_suffix}This refers to the limit of each port single-threaded limit, multi-threaded that is invalid."
 		Info_total_port_speed_limit="Please enter the maximum speed limit for each port you want to set (in KB / S)"
 		Prompt_total_port_speed_limit="${Green_font_prefix} ${Word_Prompt}: ${Font_color_suffix}This refers to the total speed limit per port, the overall speed limit for a single port."
-	
+
 		Info_input_modify_the_type="Please enter a number to select the type you want to modify :
 1. Modify ${Word_port}/${Word_pass}
 2. Modify ${Word_method}/${Word_protocol}/${Word_obfs}"
@@ -350,7 +350,7 @@ ${Green_font_prefix}  0. ${Font_color_suffix}The scripting language is English
 		Prompt_switch_language_english=" 当前脚本语言为:  中文"
 
 #菜单
-		Menu_prompt_1="Please enter a number to select the corresponding option" 
+		Menu_prompt_1="Please enter a number to select the corresponding option"
 		Menu_prompt_2="(Please enter numbers 0-27): "
 		Menu_prompt_3="Please select and enter numbers 0-27 !"
 		Menu_options="${Green_font_prefix}  1. ${Font_color_suffix}Install Shadowsocks
@@ -811,8 +811,8 @@ viewUser(){
 			do
 				user_port=`jq '.port_password' ${config_user_file} | sed '$d' | sed "1d" | awk -F ":" '{print $1}' | sed -n "${integer}p" | perl -e 'while($_=<>){ /\"(.*)\"/; print $1;}'`
 				user_password=`jq '.port_password' ${config_user_file} | sed '$d' | sed "1d" | awk -F ":" '{print $2}' | sed -n "${integer}p" | perl -e 'while($_=<>){ /\"(.*)\"/; print $1;}'`
-				user_id=$[$user_id+1]	
-			
+				user_id=$[$user_id+1]
+
 				SSprotocol=`echo ${protocol} | awk -F "_" '{print $NF}'`
 				SSobfs=`echo ${obfs} | awk -F "_" '{print $NF}'`
 				if [[ ${protocol} = "origin" ]]; then
@@ -868,14 +868,14 @@ JQ_install(){
 	JQ_ver=`jq -V`
 	if [[ -z ${JQ_ver} ]]; then
 		#wget --no-check-certificate -N "https://softs.pw/Bash/other/jq-1.5.tar.gz"
-		wget --no-check-certificate -N "https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/other/jq-1.5.tar.gz"
+		wget --no-check-certificate -N "https://raw.githubusercontent.com/fakedon/doubi/master/other/jq-1.5.tar.gz"
 		tar -xzf jq-1.5.tar.gz && cd jq-1.5
 		./configure --disable-maintainer-mode && make && make install
 		ldconfig
 		cd .. && rm -rf jq-1.5.tar.gz && rm -rf jq-1.5
 		JQ_ver=`jq -V`
 		[[ -z ${JQ_ver} ]]&& echo -e "${Error_jq_installation_failed}" && exit 1
-		echo -e "${Info_jq_installation_is_complete}" 
+		echo -e "${Info_jq_installation_is_complete}"
 	else
 		echo -e "${Info_jq_is_installed}"
 	fi
@@ -1291,7 +1291,7 @@ Modify_multi_port_user(){
 		else
 			echo "${Errpr_input_num_error}"
 		fi
-		done	
+		done
 	elif [[ ${modify_type} == "2" ]]; then
 		set_others
 		getUser
@@ -1514,7 +1514,7 @@ UninstallServerSpeeder(){
 	fi
 }
 BanBTPTSPAM(){
-	wget -4qO- raw.githubusercontent.com/ToyoDAdoubi/doubi/master/Get_Out_Spam.sh | bash
+	wget -4qO- raw.githubusercontent.com/fakedon/doubi/master/Get_Out_Spam.sh | bash
 }
 InstallBBR(){
 	echo -e "${Info_install_bbr_0}"
@@ -1626,7 +1626,7 @@ EOF
 		else
 			echo -e "${Error_set_corn_add_failed}" && exit 1
 		fi
-		
+
 	else
 		rm -rf ${ssr_file}"/"${auto_restart_cron}
 		echo -e "${Error_set_corn_Write_failed}"
